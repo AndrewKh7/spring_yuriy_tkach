@@ -4,16 +4,34 @@
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
     <bean id="client" class="com.yet.spring.core.beans.Client">
-        <constructor-arg value="1"/>
-        <constructor-arg value="Jhon Smith"/>
+        <constructor-arg type="java.lang.String" value="1"/>
+        <constructor-arg type="java.lang.String" value="Jhon Smith"/>
     </bean>
 
-    <bean id="eventLogger" class="com.yet.spring.core.beans.ConsoleEventLogger"/>
+    <bean id="ConsoleEventLogger" class="com.yet.spring.core.beans.ConsoleEventLogger"/>
+    <bean id="FileEventLogger" class="com.yet.spring.core.beans.FileEventLogger" init-method="init">
+        <constructor-arg value="./file.txt"/>
+    </bean>
+    <bean id="CacheEventLogger" class="com.yet.spring.core.beans.CacheEventLogger"
+          init-method="init" destroy-method="destroy">
+        <constructor-arg value="5"/>
+        <constructor-arg value="./file.txt"/>
+    </bean>
+
+    <bean id="event" class="com.yet.spring.core.beans.Event" scope="prototype">
+        <constructor-arg>
+            <bean class="java.util.Date"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance"/>
+        </constructor-arg>
+    </bean>
+
     <bean id="app" class="com.yet.spring.core.App" >
         <constructor-arg ref="client"/>
-        <constructor-arg ref="eventLogger"/>
-
+        <constructor-arg ref="FileEventLogger"/>
     </bean>
 
 </beans>
