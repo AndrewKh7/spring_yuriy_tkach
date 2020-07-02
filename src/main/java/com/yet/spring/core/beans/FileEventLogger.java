@@ -14,6 +14,7 @@ public class FileEventLogger implements EventLogger{
         this.file = Paths.get(file).toFile();
 
     }
+
     private void init() {
         if(!this.file.exists() && !this.file.canWrite()) {
             throw new IllegalArgumentException(this.file.getPath() + " not found");
@@ -25,6 +26,7 @@ public class FileEventLogger implements EventLogger{
             }
         }
     }
+
     @Override
     public void logEvent(Event event){
         try {
