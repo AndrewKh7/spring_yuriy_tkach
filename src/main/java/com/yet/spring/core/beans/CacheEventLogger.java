@@ -17,19 +17,18 @@ public class CacheEventLogger extends FileEventLogger {
     public void logEvent(Event event) {
         this.cache.add(event);
 
-        if (this.cache.size() == this.cacheSize) {
+        if (this.cache.size() >= this.cacheSize) {
             writeCacheToFile();
             this.cache.clear();
         }
-
     }
 
     private void writeCacheToFile() {
         this.cache.forEach(super::logEvent);
-    }
+   }
 
     private void destroy(){
-        if(this.cache.isEmpty()){
+        if(!this.cache.isEmpty()){
             writeCacheToFile();
             this.cache.clear();
         }
