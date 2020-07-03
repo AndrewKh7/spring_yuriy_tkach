@@ -41,6 +41,9 @@ public class App {
         app.logEvent(ev2, EventType.ERROR);
         app.logEvent(ev3,EventType.INFO);
         ctx.close();
+
+        String str = "Hello world!";
+        char[] arr = str.toCharArray();
     }
 
     public void logEvent(Event event){
