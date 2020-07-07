@@ -1,9 +1,15 @@
-package com.yet.spring.core.beans;
+package com.yet.spring.core.loggers;
 
-import java.util.ArrayList;
+import com.yet.spring.core.beans.Event;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 import java.util.List;
 
+@Component
 public class CombinedEventLogger implements EventLogger {
+
+    @Resource(name = "combinedLoggers")
     private List<EventLogger> loggers;
 
     public CombinedEventLogger(List<EventLogger> loggers){

@@ -2,21 +2,31 @@ package com.yet.spring.core;
 
 import com.yet.spring.core.beans.Event;
 import com.yet.spring.core.beans.EventType;
-import org.springframework.context.ApplicationContext;
+import com.yet.spring.core.loggers.EventLogger;
+import com.yet.spring.core.spring.AppConfig;
+import com.yet.spring.core.spring.LoggerConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.yet.spring.core.beans.Client;
-import com.yet.spring.core.beans.EventLogger;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Resource;
 import java.util.Map;
 
+@Service
 public class App {
+
+    @Autowired
     private Client client;
+    @Resource(name = "defaultLogger")
     private EventLogger defaultLogger;
+    @Resource(name = "loggerMap")
     private Map<EventType,EventLogger> loggers;
+
+    private App(){}
 
     private App(Client client, EventLogger eventlogger, Map<EventType,EventLogger> loggerMap) {
         this.defaultLogger = eventlogger;
@@ -25,9 +35,9 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+//        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        ConfigurableApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class, LoggerConfig.class);
         App app = (App) ctx.getBean("app");
-
         Event ev1 = (Event) ctx.getBean("event");
         ev1.setMsg("some Message!");
 
