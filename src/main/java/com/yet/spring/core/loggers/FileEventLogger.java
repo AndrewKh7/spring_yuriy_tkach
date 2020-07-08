@@ -14,18 +14,19 @@ import java.nio.file.Paths;
 public class FileEventLogger implements EventLogger {
     private File file;
 
-    @Value("target/file.txt")
+    @Value("${events.file:target/file.txt}")
     private String filename;
 
-    protected FileEventLogger(){}
-    public FileEventLogger(String file){
-        this.file = Paths.get(file).toFile();
+    protected FileEventLogger() {}
 
+    public FileEventLogger(String file){
+        this.filename = file;
     }
 
     @PostConstruct
     private void init() {
-        if(!this.file.exists() && !this.file.canWrite()) {
+        this.file = Paths.get(this.filename).toFile();
+        if(this.file.exists() && !this.file.canWrite()) {
             throw new IllegalArgumentException(this.file.getPath() + " not found");
         }else if( !this.file.exists()){
             try {

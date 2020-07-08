@@ -4,6 +4,7 @@ import com.yet.spring.core.beans.Event;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,6 @@ public class CacheEventLogger extends FileEventLogger {
     @Override
     public void logEvent(Event event) {
         this.cache.add(event);
-
         if (this.cache.size() >= this.cacheSize) {
             writeCacheToFile();
             this.cache.clear();
@@ -36,6 +36,11 @@ public class CacheEventLogger extends FileEventLogger {
     private void writeCacheToFile() {
         this.cache.forEach(super::logEvent);
    }
+
+    @PostConstruct
+    private void init(){
+        this.cache = new ArrayList<>();
+    }
 
     @PreDestroy
     private void destroy(){

@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Configuration
-@ComponentScan
+@ComponentScan("com.yet.spring.core")
 @PropertySource("classpath:client.properties")
 public class AppConfig {
 
@@ -27,6 +27,7 @@ public class AppConfig {
     public DateFormat dateFormat(){
         return DateFormat.getDateTimeInstance();
     }
+
     @Bean
     public Client client(){
         Client client = new Client();
@@ -35,6 +36,5 @@ public class AppConfig {
         client.setGreeting(env.getProperty("Greeting"));
         return client;
     }
-
 
 }

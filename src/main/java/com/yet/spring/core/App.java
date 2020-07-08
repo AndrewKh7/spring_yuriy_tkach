@@ -21,7 +21,7 @@ public class App {
 
     @Autowired
     private Client client;
-    @Resource(name = "defaultLogger")
+    @Resource(name = "defaultEventLogger")
     private EventLogger defaultLogger;
     @Resource(name = "loggerMap")
     private Map<EventType,EventLogger> loggers;
