@@ -47,6 +47,8 @@ public class App {
         Event ev3 = (Event) ctx.getBean("event");
         ev3.setMsg("Info Message!");
 
+        Event.isDay();
+
         app.logEvent(ev1);
         app.logEvent(ev2, EventType.ERROR);
         app.logEvent(ev3,EventType.INFO);
