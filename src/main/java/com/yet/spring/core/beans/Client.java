@@ -1,8 +1,11 @@
 package com.yet.spring.core.beans;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class Client {
     private String id;
     private String fullName;
+    @Value("#{ systemEnvironment['USER']}")
     private String greeting;
 
     public Client(){}
@@ -29,5 +32,9 @@ public class Client {
 
     public void setGreeting(String greeting) {
         this.greeting = greeting;
+    }
+
+    public String getGreeting() {
+        return greeting;
     }
 }

@@ -46,7 +46,7 @@ public class App {
         ev2.setMsg("Error Message!");
 
         Event ev3 = (Event) ctx.getBean("event");
-        ev3.setMsg("Info Message!");
+        ev3.setMsg("Info Message! " + app.client.getId()+" "+app.client.getGreeting());
 
         System.out.println(Event.isDay());
 
