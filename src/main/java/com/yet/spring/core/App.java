@@ -6,6 +6,7 @@ import com.yet.spring.core.loggers.EventLogger;
 import com.yet.spring.core.spring.AppConfig;
 import com.yet.spring.core.spring.LoggerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -21,7 +22,7 @@ public class App {
 
     @Autowired
     private Client client;
-    @Resource(name = "defaultEventLogger")
+    @Value("#{T(com.yet.spring.core.beans.Event).isDay() ? fileEventLogger : consoleEventLogger}")
     private EventLogger defaultLogger;
     @Resource(name = "loggerMap")
     private Map<EventType,EventLogger> loggers;
@@ -47,7 +48,7 @@ public class App {
         Event ev3 = (Event) ctx.getBean("event");
         ev3.setMsg("Info Message!");
 
-        Event.isDay();
+        System.out.println(Event.isDay());
 
         app.logEvent(ev1);
         app.logEvent(ev2, EventType.ERROR);
