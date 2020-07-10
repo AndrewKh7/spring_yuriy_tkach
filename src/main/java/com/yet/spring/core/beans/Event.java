@@ -27,6 +27,21 @@ public class Event {
     private static LocalTime morning;
     private static LocalTime evening;
 
+    static {
+        try(FileInputStream propFile = new FileInputStream("events.properties") ){
+            Properties prop = new Properties();
+            prop.load(propFile);
+            String mor = prop.getProperty("morning_time");
+            String evn = prop.getProperty("evening_time");
+            Event.morning = LocalTime.parse( mor!=null ? mor : "08:00:00");
+            Event.evening = LocalTime.parse( evn!=null ? evn : "17:00:00");
+        }catch(IOException e){
+            System.out.println("morning and evening time set in default value.");
+            Event.morning = LocalTime.parse("08:00:00");
+            Event.evening = LocalTime.parse("17:00:00");
+        }
+    }
+
     public Event(Date date, DateFormat df){
         Random random = new Random();
         this.id = random.nextInt(899)+100;
@@ -51,28 +66,8 @@ public class Event {
                 '}';
     }
 
-    private static void setMorningAndEvening(){
-        try(FileInputStream propFile = new FileInputStream("events.properties") ){
-            Properties prop = new Properties();
-            prop.load(propFile);
-            String mor = prop.getProperty("morning_time");
-            String evn = prop.getProperty("evening_time");
-            Event.morning = LocalTime.parse( mor!=null ? mor : "08:00:00");
-            Event.evening = LocalTime.parse( evn!=null ? evn : "17:00:00");
-        }catch(IOException e){
-            System.out.println("morning and evening time set in default value.");
-            Event.morning = LocalTime.parse("08:00:00");
-            Event.evening = LocalTime.parse("17:00:00");
-        }
-
-    }
-
     public static boolean isDay(){
-        if(Event.morning == null || Event.evening == null){
-            Event.setMorningAndEvening();
-        }
         LocalTime time = LocalTime.now();
-
 
         if(time.isAfter(Event.morning) && time.isBefore(Event.evening))
             return true;

@@ -11,6 +11,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.yet.spring.core.beans.Client;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-//        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         ConfigurableApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class, LoggerConfig.class);
         App app = (App) ctx.getBean("app");
         Event ev1 = (Event) ctx.getBean("event");
@@ -48,7 +48,6 @@ public class App {
         Event ev3 = (Event) ctx.getBean("event");
         ev3.setMsg("Info Message! " + app.client.getId()+" "+app.client.getGreeting());
 
-        System.out.println(Event.isDay());
 
         app.logEvent(ev1);
         app.logEvent(ev2, EventType.ERROR);
