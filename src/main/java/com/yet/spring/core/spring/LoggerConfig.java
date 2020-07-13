@@ -3,17 +3,16 @@ package com.yet.spring.core.spring;
 import com.yet.spring.core.beans.EventType;
 import com.yet.spring.core.loggers.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScans;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.*;
 
 @Configuration
-@ComponentScan("com.yet.spring.core.loggers")
+@EnableAspectJAutoProxy
+@ComponentScan
 public class LoggerConfig {
 
 //    @Bean

@@ -1,8 +1,11 @@
 package com.yet.spring.core;
 
+import com.yet.spring.core.aspects.StatisticsAspects;
 import com.yet.spring.core.beans.Event;
 import com.yet.spring.core.beans.EventType;
+import com.yet.spring.core.loggers.ConsoleEventLogger;
 import com.yet.spring.core.loggers.EventLogger;
+import com.yet.spring.core.loggers.FileEventLogger;
 import com.yet.spring.core.spring.AppConfig;
 import com.yet.spring.core.spring.LoggerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +14,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.yet.spring.core.beans.Client;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,19 +50,20 @@ public class App {
         ev3.setMsg("Info Message! " + app.client.getId()+" "+app.client.getGreeting());
 
 
-        app.logEvent(ev1);
-        app.logEvent(ev2, EventType.ERROR);
-        app.logEvent(ev3,EventType.INFO);
+        app.appLogEvent(ev1);
+        app.appLogEvent(ev2, EventType.ERROR);
+        app.appLogEvent(ev3,EventType.INFO);
+
+        app.printLoggerStatistics((StatisticsAspects) ctx.getBean("statisticsAspects"));
         ctx.close();
 
-        String str = "Hello world!";
-        char[] arr = str.toCharArray();
     }
 
-    public void logEvent(Event event){
+    public void appLogEvent(Event event){
         this.defaultLogger.logEvent(event);
     }
-    public void logEvent(Event event, EventType type) {
+
+    public void appLogEvent(Event event, EventType type) {
         EventLogger logger = loggers.get(type);
         if(logger == null){
             logger = this.defaultLogger;
@@ -69,4 +71,9 @@ public class App {
         logger.logEvent(event);
     }
 
+    public void printLoggerStatistics(StatisticsAspects statistic){
+        Map<Class<EventLogger>, Integer>  map = statistic.getCount();
+        System.out.println("Logger statistic: ");
+        map.forEach((key,val) -> System.out.println(key.getSimpleName() + ": " + val));
+    }
 }
